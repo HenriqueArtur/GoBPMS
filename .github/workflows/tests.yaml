@@ -1,0 +1,38 @@
+name: Run Tests with Docker Compose (MongoDB)
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Run Go Tests with MongoDB (Docker Compose)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Start MongoDB with Docker Compose
+        run: docker-compose up -d mongo
+
+      - name: Wait for MongoDB
+        run: |
+          for i in {1..30}; do
+            if docker exec $(docker ps -qf "name=mongo") mongo --eval 'db.runCommand({ ping: 1 })'; then
+              echo "MongoDB is ready!"
+              exit 0
+            fi
+            echo "Waiting for MongoDB to be ready..."
+            sleep 2
+          done
+          echo "MongoDB did not become ready in time!"
+          docker-compose logs mongo
+          exit 1
+
+      - name: Run tests
+        run: make test
+
+      - name: Stop Docker Compose
+        run: docker-compose down
