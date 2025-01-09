@@ -28,18 +28,5 @@ jobs:
         with:
           go-version: 1.23.4
 
-      - name: Wait for MongoDB
-        run: |
-          for i in {1..30}; do
-            if mongo --host localhost --eval 'db.runCommand({ ping: 1 })'; then
-              echo "MongoDB is ready!"
-              exit 0
-            fi
-            echo "Waiting for MongoDB to be ready..."
-            sleep 2
-          done
-          echo "MongoDB did not become ready in time!"
-          exit 1
-
       - name: Run tests
         run: make test
