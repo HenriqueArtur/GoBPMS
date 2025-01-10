@@ -1,5 +1,5 @@
-// Package dbclient provides utilities to establish and manage connections to MongoDB.
-package dbclient
+// Package dbmongoclient provides utilities to establish and manage connections to MongoDB.
+package dbmongoclient
 
 import (
 	"context"
