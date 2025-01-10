@@ -1,4 +1,4 @@
-package dbclient
+package mongoclient
 
 import (
 	"testing"
@@ -17,7 +17,7 @@ func Test_ConnectToMongoDB_Success(t *testing.T) {
 		Database: "",
 	}
 
-	client, err := ConnectToMongoDB(config)
+	client, err := Connect(config)
 	if err != nil {
 		t.Fatalf("Failed to connect to MongoDB: %s", err)
 	}
@@ -30,7 +30,7 @@ func Test_ConnectToMongoDB_InvalidURL(t *testing.T) {
 		URL: "invalid_url",
 	}
 
-	_, err := ConnectToMongoDB(config)
+	_, err := Connect(config)
 	if err == nil {
 		t.Fatal("Expected error for invalid MongoDB URL, got nil")
 	}
