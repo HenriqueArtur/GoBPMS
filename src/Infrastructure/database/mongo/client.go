@@ -1,19 +1,19 @@
-// Package dbmongoclient provides utilities to establish and manage connections to MongoDB.
-package dbmongoclient
+// Package mongoclient provides utilities to establish and manage connections to MongoDB.
+package mongoclient
 
 import (
 	"context"
 	"fmt"
 	"time"
 
-	infrastructure "github.com/HenriqueArtur/ProcessInGo/src/Infrastructure"
+	Infrastructure "github.com/HenriqueArtur/ProcessInGo/src/Infrastructure"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// ConnectToMongoDB establishes a connection to MongoDB using the provided configuration.
+// Connect establishes a connection to MongoDB using the provided configuration.
 // It returns a MongoDB client instance or an error if the connection fails.
-func ConnectToMongoDB(config infrastructure.MongoConfig) (*mongo.Client, error) {
+func Connect(config Infrastructure.MongoConfig) (*mongo.Client, error) {
 	// Create a context with a timeout for the connection
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

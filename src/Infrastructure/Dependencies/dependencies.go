@@ -5,7 +5,7 @@
 package dependencies
 
 import (
-	infrastructure "github.com/HenriqueArtur/ProcessInGo/src/Infrastructure"
+	Infrastructure "github.com/HenriqueArtur/ProcessInGo/src/Infrastructure"
 	"github.com/HenriqueArtur/ProcessInGo/src/Infrastructure/database"
 )
 
@@ -14,17 +14,18 @@ import (
 // connection and environment variables.
 type Dependency struct {
 	Database *database.Database
-	Env      infrastructure.EnvVars
+	Env      Infrastructure.EnvVars
 }
 
 // Factory initializes and returns a new Dependency instance, creating and injecting
 // the required components (e.g., database connection). It also ensures proper error
 // handling if any component fails to initialize.
-func Factory(envVars infrastructure.EnvVars) (*Dependency, error) {
-	database, err := database.FactoryDatabase(envVars)
+func Factory(envVars Infrastructure.EnvVars) (*Dependency, error) {
+	database, err := database.Factory(envVars)
 	if err != nil {
 		return nil, err
 	}
+
 	return &Dependency{
 		Database: database,
 		Env:      envVars,

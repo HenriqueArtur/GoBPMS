@@ -2,32 +2,31 @@
 package database
 
 import (
-	infrastructure "github.com/HenriqueArtur/ProcessInGo/src/Infrastructure"
-	dbmongoclient "github.com/HenriqueArtur/ProcessInGo/src/Infrastructure/database/mongo"
+	Infrastructure "github.com/HenriqueArtur/ProcessInGo/src/Infrastructure"
+	MongoClient "github.com/HenriqueArtur/ProcessInGo/src/Infrastructure/database/mongo"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // Database struct represents the database connection configuration, client, and a function to disconnect.
 type Database struct {
-	Env        infrastructure.MongoConfig
-	Client     *mongo.Client
-	Disconnect func()
+	Env    Infrastructure.MongoConfig
+	Client *mongo.Client
 }
 
-// FactoryDatabase initializes a new Database instance by establishing a connection to Database.
-func FactoryDatabase(envVars infrastructure.EnvVars) (*Database, error) {
-	client, err := dbmongoclient.ConnectToMongoDB(envVars.DB)
+// Factory initializes a new Database instance by establishing a connection to Database.
+func Factory(envVars Infrastructure.EnvVars) (*Database, error) {
+	client, err := MongoClient.Connect(envVars.DB)
 	if err != nil {
 		return nil, err
 	}
 
-	disconnect := func() {
-		client.Disconnect(nil)
-	}
-
 	return &Database{
-		Env:        envVars.DB,
-		Client:     client,
-		Disconnect: disconnect,
+		Env:    envVars.DB,
+		Client: client,
 	}, nil
+}
+
+// Disconnect from database
+func (d Database) Disconnect() {
+	d.Client.Disconnect(nil)
 }
